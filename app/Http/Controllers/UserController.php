@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -12,7 +13,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user_data = User::all();
+        if(!auth()->user() || auth()->user()->position == 'user'){
+            abort(403);
+        }
+        $user_data = User::withTrashed()->wherenot('id',request()->user()->id)->get();
         return view('admin.user-management.index',['user_data' => $user_data]);
     }
 
@@ -21,7 +25,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.user-management.create');
     }
 
     /**
@@ -29,7 +33,18 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new User;
+ 
+        $data->name = $request->name;
+        $data->email = $request->email;
+        $data->password = Hash::make($request->password);
+        $data->position = $request->position;
+        
+        if(!$data->save()){
+            return redirect()->route('users.index');
+        }else{
+            return redirect()->route('users.index');
+        }
     }
 
     /**
@@ -45,7 +60,8 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $users = User::where('id',$id)->withTrashed()->first();
+        return view('admin.user-management.edit',['users' => $users]);
     }
 
     /**
@@ -53,7 +69,17 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = User::find($id);
+ 
+        $data->name = $request->name;
+        $data->email = $request->email;
+        $data->position = $request->position;
+        
+        if(!$data->save()){
+            return redirect()->route('users.index');
+        }else{
+            return redirect()->route('users.index');
+        }
     }
 
     /**
@@ -61,6 +87,19 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = User::find($id);
+ 
+        if(!$data->delete()){
+            return redirect()->route('users.index');
+        }else{
+            return redirect()->route('users.index');
+        }
+    }
+
+    public function recovery(string $id)
+    {
+        User::withTrashed()->find($id)->restore();
+
+        return redirect()->route('users.index');
     }
 }
