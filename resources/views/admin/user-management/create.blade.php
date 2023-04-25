@@ -43,6 +43,7 @@
                         <select id="position" name="position" class="bg-gray-900 border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected>เลือกสิทธิ์การเข้าถึง</option>
                         <option value="admin">ผู้ดูแลระบบ</option>
+                        <option value="technician">ช่าง</option>
                         <option value="user">ผู้ใช้งานทั่วไป</option>
                         </select>
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('technician_id')->nullable();
             $table->string('title');
-            $table->string('details');
+            $table->text('details');
             $table->string('images');
             $table->string('status')->nullable();
             $table->softDeletes();

@@ -3,7 +3,7 @@
         <div class="max-w-full mx-auto">
             <div class="bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-white">
-                    {{ __("You're logged in!") }}
+                    ยินดีต้อนรับ คุณ, {{ request()->user()->name }}
                 </div>
             </div>
         </div>

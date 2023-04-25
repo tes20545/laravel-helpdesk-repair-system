@@ -25,6 +25,10 @@ class UserController extends Controller
      */
     public function create()
     {
+        if(!auth()->user() || auth()->user()->position == 'user'){
+            abort(403);
+        }
+
         return view('admin.user-management.create');
     }
 
@@ -60,6 +64,10 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
+        if(!auth()->user() || auth()->user()->position == 'user'){
+            abort(403);
+        }
+
         $users = User::where('id',$id)->withTrashed()->first();
         return view('admin.user-management.edit',['users' => $users]);
     }

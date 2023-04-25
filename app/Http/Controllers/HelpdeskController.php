@@ -12,7 +12,10 @@ class HelpdeskController extends Controller
      */
     public function index()
     {
-        $data = Helpdesk::where('helpdesks.user_id', request()->user()->id)->get();
+        if(auth()->user() == null || auth()->user()->position != 'user'){
+            abort(403);
+        }
+        $data = Helpdesk::withTrashed()->where('helpdesks.user_id', request()->user()->id)->get();
         return view('customer.helpdesk.index',['data' => $data]);
     }
 
@@ -21,6 +24,10 @@ class HelpdeskController extends Controller
      */
     public function create()
     {
+        if(auth()->user() == null || auth()->user()->position != 'user'){
+            abort(403);
+        }
+
         return view('customer.helpdesk.create');
     }
 
@@ -29,7 +36,17 @@ class HelpdeskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $helpdesk           = new Helpdesk;
+        $helpdesk->user_id  = request()->user()->id;
+        $helpdesk->title    = $request->title;
+        $helpdesk->details  = $request->details;
+        $helpdesk->images   = $request->file('file_upload')->storePublicly('images/', ['disk' => 'public']);;
+        $helpdesk->status   = 'pending';
+
+        if($helpdesk->save()){
+            return redirect()->route('helpdesk.index');
+        }
+            return redirect()->route('helpdesk.index');
     }
 
     /**
@@ -37,7 +54,13 @@ class HelpdeskController extends Controller
      */
     public function show(Helpdesk $helpdesk)
     {
-        //
+        if(auth()->user() == null || auth()->user()->position != 'user'){
+            abort(403);
+        }
+
+        $tech = Helpdesk::join('technicians','helpdesks.technician_id','=','technicians.id')->where('helpdesks.id',$helpdesk->id)->first();
+
+        return view('customer.helpdesk.show',['data' => $helpdesk,'tech' => $tech]);
     }
 
     /**
@@ -45,7 +68,10 @@ class HelpdeskController extends Controller
      */
     public function edit(Helpdesk $helpdesk)
     {
-        //
+        if(auth()->user() == null || auth()->user()->position != 'user'){
+            abort(403);
+        }
+        return view('customer.helpdesk.edit',['data' => $helpdesk]);
     }
 
     /**
@@ -53,7 +79,24 @@ class HelpdeskController extends Controller
      */
     public function update(Request $request, Helpdesk $helpdesk)
     {
-        //
+        //update image?
+        if ($request->file('file_upload')) {
+            $image = $request->file('file_upload')->storePublicly('images/', ['disk' => 'public']);
+        } else {
+            $image = $request->old_img;
+        }
+
+        $helpdesk           = Helpdesk::where('id',$helpdesk->id)->first();
+        $helpdesk->user_id  = request()->user()->id;
+        $helpdesk->title    = $request->title;
+        $helpdesk->details  = $request->details;
+        $helpdesk->images   = $image;
+        $helpdesk->status   = 'pending';
+
+        if($helpdesk->save()){
+            return redirect()->route('helpdesk.index');
+        }
+            return redirect()->route('helpdesk.index');
     }
 
     /**
@@ -61,6 +104,9 @@ class HelpdeskController extends Controller
      */
     public function destroy(Helpdesk $helpdesk)
     {
-        //
+        Helpdesk::where('id', $helpdesk->id)->update(['status' => 'cancel']);
+        $helpdesk->delete();
+
+        return redirect()->route('helpdesk.index');
     }
 }

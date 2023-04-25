@@ -45,10 +45,10 @@ Route::prefix('helpdesk')->name('helpdesk.')->group(function (){
     Route::get('/', [HelpdeskController::class, 'index'])->name('index');
     Route::get('/create', [HelpdeskController::class, 'create'])->name('create');
     Route::post('/store', [HelpdeskController::class, 'store'])->name('store');
-    Route::get('/edit/{id}', [HelpdeskController::class, 'edit'])->name('edit');
-    Route::put('/update/{id}', [HelpdeskController::class, 'update'])->name('update');
-    Route::delete('/delete/{id}', [HelpdeskController::class, 'destroy'])->name('delete');
-    Route::put('/recovery/{id}', [HelpdeskController::class, 'recovery'])->name('recovery');
+    Route::get('/show/{helpdesk}', [HelpdeskController::class, 'show'])->name('show');
+    Route::get('/edit/{helpdesk}', [HelpdeskController::class, 'edit'])->name('edit');
+    Route::put('/update/{helpdesk}', [HelpdeskController::class, 'update'])->name('update');
+    Route::delete('/delete/{helpdesk}', [HelpdeskController::class, 'destroy'])->name('delete');
 
 });
 
