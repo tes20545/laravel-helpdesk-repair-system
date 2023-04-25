@@ -4,7 +4,7 @@
 
             <div class="p-4 sm:p-8 bg-gray-800 shadow sm:rounded-lg">
                 <div class="max-w-full">
-                    @include('profile.partials.address-form')
+                    <livewire:customer.address-form/>
                 </div>
             </div>
 

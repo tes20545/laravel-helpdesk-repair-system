@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HelpdeskController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +38,17 @@ Route::prefix('user-management')->name('users.')->group(function (){
     Route::put('/update/{id}', [UserController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [UserController::class, 'destroy'])->name('delete');
     Route::put('/recovery/{id}', [UserController::class, 'recovery'])->name('recovery');
+
+});
+
+Route::prefix('helpdesk')->name('helpdesk.')->group(function (){
+    Route::get('/', [HelpdeskController::class, 'index'])->name('index');
+    Route::get('/create', [HelpdeskController::class, 'create'])->name('create');
+    Route::post('/store', [HelpdeskController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [HelpdeskController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [HelpdeskController::class, 'update'])->name('update');
+    Route::delete('/delete/{id}', [HelpdeskController::class, 'destroy'])->name('delete');
+    Route::put('/recovery/{id}', [HelpdeskController::class, 'recovery'])->name('recovery');
 
 });
 
