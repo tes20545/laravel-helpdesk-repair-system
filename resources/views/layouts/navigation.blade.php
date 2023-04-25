@@ -196,7 +196,7 @@
                                     {{ __('แดชบอร์ด') }}
                                 </x-nav-link>
                             </li>
-                            @if (auth()->user()->position == 'user')
+                            @if (auth()->user()->position == 'user' || auth()->user()->position == null)
                                 <li>
                                     <x-nav-link :href="route('helpdesk.index')" :active="request()->routeIs('helpdesk.*')">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
