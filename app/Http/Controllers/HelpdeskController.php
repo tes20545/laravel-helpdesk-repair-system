@@ -12,7 +12,7 @@ class HelpdeskController extends Controller
      */
     public function index()
     {
-        if(auth()->user()->position == null || auth()->user()->position != 'user'){
+        if(auth()->user()->position != null){
             abort(403);
         }
         $data = Helpdesk::where('helpdesks.user_id', request()->user()->id)->get();
