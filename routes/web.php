@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\HelpdeskAdmin;
 use App\Http\Controllers\HelpdeskController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QeueController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,9 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [Dashboard::class, 'index'])->name('index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -61,6 +61,17 @@ Route::prefix('helpdesk-admin')->name('ha.')->group(function (){
     Route::get('/edit/{helpdesk}', [HelpdeskAdmin::class, 'edit'])->name('edit');
     Route::put('/update/{helpdesk}', [HelpdeskAdmin::class, 'update'])->name('update');
     Route::delete('/delete/{helpdesk}', [HelpdeskAdmin::class, 'destroy'])->name('delete');
+
+});
+
+Route::prefix('qeue')->name('qeue.')->group(function (){
+    Route::get('/', [QeueController::class, 'index'])->name('index');
+    Route::get('/create', [QeueController::class, 'create'])->name('create');
+    Route::post('/store', [QeueController::class, 'store'])->name('store');
+    Route::get('/show/{qeue}', [QeueController::class, 'show'])->name('show');
+    Route::get('/edit/{qeue}', [QeueController::class, 'edit'])->name('edit');
+    Route::put('/update/{qeue}', [QeueController::class, 'update'])->name('update');
+    Route::delete('/delete/{qeueqeue}', [QeueController::class, 'destroy'])->name('delete');
 
 });
 
