@@ -11,5 +11,5 @@ class Technician extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $table='tehnicians';
+    protected $table='technicians';
 }

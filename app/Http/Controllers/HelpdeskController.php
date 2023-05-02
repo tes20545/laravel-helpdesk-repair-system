@@ -54,10 +54,6 @@ class HelpdeskController extends Controller
      */
     public function show(Helpdesk $helpdesk)
     {
-        if(auth()->user() == null || auth()->user()->position != 'user'){
-            abort(403);
-        }
-
         $tech = Helpdesk::join('technicians','helpdesks.technician_id','=','technicians.id')->where('helpdesks.id',$helpdesk->id)->first();
 
         return view('customer.helpdesk.show',['data' => $helpdesk,'tech' => $tech]);

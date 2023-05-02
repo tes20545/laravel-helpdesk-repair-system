@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HelpdeskAdmin;
 use App\Http\Controllers\HelpdeskController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -49,6 +50,17 @@ Route::prefix('helpdesk')->name('helpdesk.')->group(function (){
     Route::get('/edit/{helpdesk}', [HelpdeskController::class, 'edit'])->name('edit');
     Route::put('/update/{helpdesk}', [HelpdeskController::class, 'update'])->name('update');
     Route::delete('/delete/{helpdesk}', [HelpdeskController::class, 'destroy'])->name('delete');
+
+});
+
+Route::prefix('helpdesk-admin')->name('ha.')->group(function (){
+    Route::get('/', [HelpdeskAdmin::class, 'index'])->name('index');
+    Route::get('/create', [HelpdeskAdmin::class, 'create'])->name('create');
+    Route::post('/store', [HelpdeskAdmin::class, 'store'])->name('store');
+    Route::get('/show/{helpdesk}', [HelpdeskAdmin::class, 'show'])->name('show');
+    Route::get('/edit/{helpdesk}', [HelpdeskAdmin::class, 'edit'])->name('edit');
+    Route::put('/update/{helpdesk}', [HelpdeskAdmin::class, 'update'])->name('update');
+    Route::delete('/delete/{helpdesk}', [HelpdeskAdmin::class, 'destroy'])->name('delete');
 
 });
 

@@ -14,8 +14,11 @@ return new class extends Migration
         Schema::create('technicians', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('telephone');
-            $table->string('qeue');
+            $table->string('telephone')->nullable();
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->string('position')->nullable();
+            $table->string('qeue')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

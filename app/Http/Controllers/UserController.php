@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Technician;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -17,7 +18,9 @@ class UserController extends Controller
             abort(403);
         }
         $user_data = User::withTrashed()->wherenot('id',request()->user()->id)->get();
-        return view('admin.user-management.index',['user_data' => $user_data]);
+        $user_tech = Technician::all();
+        $data = $user_data->merge($user_tech);
+        return view('admin.user-management.index',['user_data' => $data]);
     }
 
     /**
@@ -37,18 +40,36 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $data = new User;
- 
-        $data->name = $request->name;
-        $data->email = $request->email;
-        $data->password = Hash::make($request->password);
-        $data->position = $request->position;
-        
-        if(!$data->save()){
-            return redirect()->route('users.index');
+        if($request->position == 'technician'){
+
+            $data_t = new Technician;
+            $data_t->name = $request->name;
+            $data_t->email = $request->email;
+            $data_t->position = 'technician';
+            $data_t->password = Hash::make($request->password);
+
+            if(!$data_t->save()){
+                return redirect()->route('users.index');
+            }else{
+                return redirect()->route('users.index');
+            }
+
         }else{
-            return redirect()->route('users.index');
+            $data = new User;
+ 
+            $data->name = $request->name;
+            $data->email = $request->email;
+            $data->password = Hash::make($request->password);
+            $data->position = $request->position;
+            
+            if(!$data->save()){
+                return redirect()->route('users.index');
+            }else{
+                return redirect()->route('users.index');
+            }
         }
+
+        
     }
 
     /**

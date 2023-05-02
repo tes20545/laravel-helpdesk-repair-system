@@ -82,10 +82,11 @@
                             </div>
                           </td>
                         @endif
-                        
                         @if($user->position == 'admin')
                         <td class="hidden py-4 pl-0 pr-8 text-sm leading-6 text-gray-400 md:table-cell lg:pr-20">ผู้ดูแลระบบ</td>
-                        @else
+                        @elseif($user->position == 'technician')
+                        <td class="hidden py-4 pl-0 pr-8 text-sm leading-6 text-gray-400 md:table-cell lg:pr-20">ช่าง</td>
+                        @elseif($user->position == 'user')
                         <td class="hidden py-4 pl-0 pr-8 text-sm leading-6 text-gray-400 md:table-cell lg:pr-20">ผู้ใช้งานทั่วไป</td>
                         @endif
                         <td class="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-gray-400 sm:table-cell sm:pr-6 lg:pr-8">
